@@ -23,7 +23,8 @@ var insert=function(params,new_mi_no)
         data:err
     
       }
-      console.log('error in inserting');//res.send(obj);
+      console.log('error in inserting'); 
+      res.send(obj);
     }
     else{
       var obj={
@@ -31,7 +32,7 @@ var insert=function(params,new_mi_no)
         new_mi_no:new_mi_no,
         message:"Successfully Registered"
       }
-      //res.send(obj);
+      res.send(obj);
       //sending mails
 console.log('registerd');
 
