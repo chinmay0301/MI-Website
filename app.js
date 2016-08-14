@@ -10,8 +10,10 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var insert = require('./routes/insert');
 var display = require('./routes/mi_display');
+var mail = require('./routes/node_mailer');
 
 var app = express();
+
 
 var connection = mysql.createConnection({
   host     : 'localhost',
@@ -43,6 +45,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/api/insert', insert);
 app.use('/api/display',display);
+app.use('/api/mail', mail);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

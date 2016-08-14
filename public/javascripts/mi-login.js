@@ -12,15 +12,19 @@ app.config(['$routeProvider', function($routeProvider){
         })
         .when('/events-reg/', {
             templateUrl: 'partials/events.html',
-            controller: 'DisplayMi'
+            controller: 'SendMail'
             })
+        .when('/users/', {
+             templateUrl: 'partials/users.html',
+             controller: 'Test'
+             })
         .otherwise({
             redirectTo: '/'
         });
 }]);
 
 
-
+var mi;
 
 
 app.controller('AddUser', ['$scope', '$resource', '$location', '$window',
@@ -32,8 +36,9 @@ app.controller('AddUser', ['$scope', '$resource', '$location', '$window',
            Users.save($scope.user,function()
              {  
                console.log('works');
-               $location.path('/events-reg');
              });
+           
+            
            //Users = $resource('/api/display');
              //Users.query(function(obj){
                //   var mi_num;
@@ -54,14 +59,25 @@ $location.path('/events-reg');
     }]);
 
 
-app.controller('DisplayMi', ['$scope', '$resource', '$location', '$window',
+app.controller('SendMail', ['$scope', '$resource', '$location', '$window',
       function($scope, $resource, $location) {
         var Users = $resource('/api/insert');
-            Users.query(function(insert){
-             $scope.mi_num = insert.new_mi_no;
-             $window.alert(user);
-            }); 
+        
+          Users.get(function(insert){
+            console.log(insert); 
+             $scope.user = insert;
+            console.log($scope.user);
+           });
         }]);
 
-
+app.controller('Test', ['$scope', '$resource', '$location', '$window',
+      function($scope, $resource, $location) {
+        var Users = $resource('/users');
+             
+             Users.get(function(users){
+                $scope.user = users ;
+                console.log($scope.user); 
+                  });
+            
+        }]);
 

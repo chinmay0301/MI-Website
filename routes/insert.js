@@ -9,11 +9,6 @@ var connection = mysql.createConnection({
   database : 'MI'
 });
 
- var out = { 
-          status:true,
-          new_mi_no:12,
-          message:"Successfully Registered"
-         }
  
 var insert=function(params,new_mi_no)
 {
@@ -50,9 +45,11 @@ console.log('registerd');
 //var new_mi_no = 42;
 connection.connect();
 
-
+var num;
 router.post('/', function(req, res){
 	params = req.body;
+        num = params.mobile;
+       
 	console.log('entering into route');
     //insert(params,42);
      //connection.query('INSERT INTO test (name,college,gender) VALUES (' + connection.escape(params.name) + ', ' + connection.escape(params.college)+','+connection.escape(params.gender)+')', function selectCb(err,results,fields
@@ -83,7 +80,7 @@ router.post('/', function(req, res){
           message:"The user is already registered",
           data:rows[0].MI_NUMBER
         };
-        out.new_mi_no=obj.data;
+
         
       }
       else{
@@ -107,7 +104,7 @@ router.post('/', function(req, res){
             {
               new_mi_no='MI-'+mi+'-101';
               insert(params,new_mi_no);
-	      out.new_mi_no = new_mi_no;
+
               
             
             }
@@ -129,14 +126,14 @@ router.post('/', function(req, res){
                           {
                             new_mi_no='MI-'+mi+'-1000';
                             insert(params,new_mi_no);
-                            out.new_mi_no = new_mi_no;
+                            
                           }
                           else
                           {
                           var no=parseInt(rowsss[0].MI_NUMBER.split("-")[2])+1;
                               new_mi_no='MI-'+mi+'-'+no;
                               insert(params,new_mi_no);
-                              out.new_mi_no = new_mi_no;
+                            
                           }
                         });
             }
@@ -153,9 +150,7 @@ router.post('/', function(req, res){
       }
     }) //end of first query
    
-console.log(req);
-console.log(out);
-res.json(out);
+console.log('done');
 
   }
   else
@@ -170,5 +165,36 @@ res.json(out);
   
  });
 
+router.get('/', function(req,res) 
+{
+var obj;
+console.log('entering into get');
+ console.log(num);
+//console.log(num);
+connection.query('SELECT * from register where CONTACT LIKE '+connection.escape(num), function(err,rows,fields){
+      if(err)
+      {
+         
+        obj={
+          status:false,
+          message:"Error connecting to database",
+          data:err
+        };
+      }
+      else if(rows[0]!=null)
+      {
+       obj={
+          status:false,
+          message:"The user is already registered",
+          data:rows[0].MI_NUMBER
+        };
 
+        console.log(obj);
+        res.json(obj);        
+      }
+});
+
+ 
+});
+ 
 module.exports = router;

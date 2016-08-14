@@ -1,43 +1,31 @@
-var express = require('express');
-var nodemailer = require('nodemailer');
-var app = express();
+var nodemailer = require("nodemailer");
 
-var router = express.Router();
-app.use('/sayHello', router);
-router.post('/', handleSayHello); // handle the route at yourdomain.com/sayHello
-
-function handleSayHello(req, res) {
-    // Not the movie transporter!
-    var transporter = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-            user: 'chinmay0301@gmail.com', // Your email id
-            pass: 'silvermedal' // Your password
-        }
-    });
-    
-}
-
-
-
-var text = 'Hello world from \n\n';
-
-var mailOptions = {
-    from: 'chinmay0301@gmail.com>', // sender address
-    to: 'sgaunekar96@gmail.com', // list of receivers
-    subject: 'Email Example', // Subject line
-    text: text //, // plaintext body
-    // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
-};
-
-transporter.sendMail(mailOptions, function(error, info){
-    if(error){
-        console.log(error);
-        res.json({yo: 'error'});
-    }else{
-        console.log('Message sent: ' + info.response);
-        res.json({yo: info.ressponse});
-    };
+// create reusable transport method (opens pool of SMTP connections)
+var smtpTransport = nodemailer.createTransport("SMTP",{
+    service: "Gmail",
+    auth: {
+        user: "chinmay0301@gmail.com",
+        pass: "silvermedal"
+    }
 });
 
-module.exports = app
+// setup e-mail data with unicode symbols
+var mailOptions = {
+    from: "chinmay ✔ <chinmay0301@gmail.com>", // sender address
+    to: "chinmay0301@gmail.com", // list of receivers
+    subject: "Hello ✔", // Subject line
+    text: "Hello world ✔", // plaintext body
+    html: "<b>Hello world ✔</b>" // html body
+}
+
+// send mail with defined transport object
+smtpTransport.sendMail(mailOptions, function(error, response){
+    if(error){
+        console.log(error);
+    }else{
+        console.log("Message sent: " + response.message);
+    }
+
+    // if you don't want to use this transport object anymore, uncomment following line
+    //smtpTransport.close(); // shut down the connection pool, no more messages
+});
