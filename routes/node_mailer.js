@@ -26,7 +26,7 @@ var mailOptions = {
         service: 'Gmail',
         auth: {
             user: 'chinmay0301@gmail.com', // Your email id
-            pass: 'silvermedal' // Your password
+            pass: '******' // Your password
         }
     });
 
