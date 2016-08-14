@@ -5,7 +5,7 @@ var mysql = require('mysql');
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : '**********',
+  password : 'cat@03$01$98',
   database : 'MI'
 });
 
@@ -184,8 +184,8 @@ connection.query('SELECT * from register where CONTACT LIKE '+connection.escape(
       else if(rows[0]!=null)
       {
        obj={
-          status:false,
-          message:"The user is already registered",
+          status:true,
+          message:"Your MI number",
           data:rows[0].MI_NUMBER
         };
 
